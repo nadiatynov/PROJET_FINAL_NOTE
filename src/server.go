@@ -5,11 +5,18 @@ import (
 	"net/http"
 )
 
+type Game struct {
+	Nom   string `json:"title"` //att bien metttre les champs de l'api et pas ceux du sujet
+	Type  string `json:"genre"`
+	Image string `json:"thumbnail"`
+}
+
 func Server() {
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/inscription", Inscription)
 	http.HandleFunc("/login", Connexion)
 	http.HandleFunc("/setinfo", SetInscription)
+	http.HandleFunc("/player", PlayerHandler)
 
 	fmt.Println("Serveur lancé sur localhost 8080")
 	http.ListenAndServe(":8080", nil)

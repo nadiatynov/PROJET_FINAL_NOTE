@@ -1,0 +1,9 @@
+{{ define "data" }}
+{{ range . }}
+<div class="games">
+    <ul><li> {{ .Nom }}</li></ul>
+    <li> {{ .Type }}</li>
+    <li> {{ .Image }}</li>
+</div>
+{{end}}
+{{end}}
