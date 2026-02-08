@@ -3,7 +3,8 @@ package soutien
 import (
 	"database/sql"
 	"fmt"
-	//_ "github.com/mattn/go-sqlite3"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
@@ -37,7 +38,7 @@ func CreateDB() {
 	carte_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT,
 	type TEXT,
-	FOREIGN KEY (carte_id) REFERENCES Users(id)
+	FOREIGN KEY (user_id) REFERENCES Users(id)
 	);
      `
 	_, err = db.Exec(createTablecartes)
@@ -52,7 +53,7 @@ func CreateDB() {
 func InsertValue(nom, email, mdp string) int {
 	InitDB()
 
-	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?)`
+	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?,?)`
 	res, err := db.Exec(insertQuery, nom, email, mdp)
 
 	if err != nil {

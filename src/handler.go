@@ -39,7 +39,7 @@ func PlayerHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tmpl.Execute(w, games)
 	if err != nil {
-		http.Error(w, "errer executon du template", http.StatusInternalServerError)
+		http.Error(w, "erreur executon du template", http.StatusInternalServerError)
 	}
 }
 
@@ -76,7 +76,7 @@ func Connexion(w http.ResponseWriter, r *http.Request) {
 func SetInscription(w http.ResponseWriter, r *http.Request) {
 
 	username := r.FormValue("username")
-	email := r.FormValue("emai")
+	email := r.FormValue("email")
 	mdp := r.FormValue("password")
 
 	id := InsertValue(username, email, mdp)
