@@ -14,6 +14,7 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("InitDB called")
 }
 
 func CreateDB() {

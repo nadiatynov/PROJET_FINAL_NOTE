@@ -76,7 +76,7 @@ func Connexion(w http.ResponseWriter, r *http.Request) {
 func SetInscription(w http.ResponseWriter, r *http.Request) {
 
 	username := r.FormValue("username")
-	email := r.FormValue("emai")
+	email := r.FormValue("email")
 	mdp := r.FormValue("password")
 
 	id := InsertValue(username, email, mdp)
@@ -87,4 +87,18 @@ func SetInscription(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, cookie)
 
 	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func Dashboard(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("user")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	if cookie.Value == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 }
