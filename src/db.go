@@ -38,10 +38,26 @@ func CreateDB() {
 	carte_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT,
 	type TEXT,
-	FOREIGN KEY (carte_id) REFERENCES Users(id)
+	image TEXT 
 	);
-     `
+     ` //ajout de image par marjane
 	_, err = db.Exec(createTablecartes)
+
+	if err != nil {
+		panic(err)
+	}
+
+	createTableUserCarte := `
+	CREATE TABLE IF NOT EXISTS UserCarte(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER,
+	carte_id INTEGER,
+	FOREIGN KEY (user_id) REFERENCES Users(id),
+	FOREIGN KEY (carte_id) REFERENCES Cartes(carte_id)
+	);
+	` //ajout de la table par marjane
+
+	_, err = db.Exec(createTableUserCarte)
 
 	if err != nil {
 		panic(err)

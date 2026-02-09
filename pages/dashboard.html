@@ -7,5 +7,18 @@
 </head>
 <body>
     <h1>dashboard en cours</h1>
+    <p>nbr total de cartes : {{ .Total }}</p>
+
+    <h2>Ta collection :</h2>
+
+{{ range .Collection }}
+    <div>
+        <p>Nom : {{ .Nom }}</p>
+        <p>Type : {{ .Type }}</p>
+        <img src="{{ .Image }}" alt="{{ .Nom }}" width="120">
+    </div>
+{{ end }}
+
+    <button onclick="window.location.href='/pack'">Ouvrir un pack</button>
 </body>
 </html>
