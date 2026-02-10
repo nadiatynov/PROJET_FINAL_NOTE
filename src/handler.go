@@ -10,7 +10,7 @@ import (
 )
 
 func LoadGames() ([]Game, error) {
-	resp, err := http.Get("https://www.freetogame.com/api/games")
+	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon/{id_du_pokemon}")
 	if err != nil {
 		log.Fatal(err)
 	}
