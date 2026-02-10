@@ -80,7 +80,7 @@ func SetConnexion(w http.ResponseWriter, r *http.Request) {
 
 	userId := Verifconnect(username, mdp)
 	if userId == 0 { //si pas de user ou mauvais identfiant on revoie a P princiapl
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
@@ -90,7 +90,7 @@ func SetConnexion(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
+	http.Redirect(w, r, "/dashboard", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
 
 }
 
