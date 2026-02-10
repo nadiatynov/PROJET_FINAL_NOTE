@@ -3,14 +3,16 @@ package soutien
 import (
 	"database/sql"
 	"fmt"
-	//_ "github.com/mattn/go-sqlite3"
+
+	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
 
 func InitDB() {
 	var err error
-	db, err = sql.Open("sqlite3", "MyGameList.db")
+	db, err = sql.Open("sqlite3", "MyAppList.db")
 	if err != nil {
 		panic(err)
 	}
@@ -22,9 +24,9 @@ func CreateDB() {
 	createTableusers := `
 	CREATE TABLE IF NOT EXISTS Users(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	username TEXT,
-	email  TEXT,
-	mdp VARCHAR(40)
+	username TEXT NOT NULL,
+	email  TEXT NOT NULL,
+	mdp TEXT NOT NULL
 	);
 	`
 	_, err := db.Exec(createTableusers)
@@ -36,8 +38,8 @@ func CreateDB() {
 	createTablecartes := `
 	CREATE TABLE IF NOT EXISTS Cartes(
 	carte_id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT,
-	type TEXT,
+	name TEXT NOT NULL,
+	type TEXT NOT NULL,
 	image TEXT 
 	);
      ` //ajout de image par marjane
@@ -66,11 +68,22 @@ func CreateDB() {
 	defer db.Close()
 }
 
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
 func InsertValue(nom, email, mdp string) int {
 	InitDB()
 
-	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?)`
-	res, err := db.Exec(insertQuery, nom, email, mdp)
+	hash, err := HashPassword(mdp)
+
+	if err != nil {
+		panic(err)
+	}
+
+	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?,?)`
+	res, err := db.Exec(insertQuery, nom, email, hash)
 
 	if err != nil {
 		panic(err)
