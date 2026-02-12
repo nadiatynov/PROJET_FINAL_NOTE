@@ -80,7 +80,7 @@ func SetConnexion(w http.ResponseWriter, r *http.Request) {
 
 	userId := Verifconnect(username, mdp)
 	if userId == 0 { //si pas de user ou mauvais identfiant on revoie a P princiapl
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther) //err pas inscription avant renvoie a p /
 		return
 	}
 
@@ -94,14 +94,21 @@ func SetConnexion(w http.ResponseWriter, r *http.Request) {
 
 }
 
+var id int //en glob car besoin ds pack remettre ds verifconnect si prblm
+
 func Verifconnect(username, mdp string) int { //int car return id pas string att
 	InitDB()
 
-	row := db.QueryRow("SELECT id FROM Users WHERE username = ? AND mdp = ?", username, mdp) //requete pr chercher user a username et mpd
+	row := db.QueryRow("SELECT id , mdp FROM Users WHERE username = ?", username) //requete pr chercher user a username et mpd
 
-	var id int
-	err := row.Scan(&id) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
+	var mdpBD string
+	err := row.Scan(&id, &mdpBD) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
 	if err != nil {
+		db.Close()
+		return 0
+	}
+	if mdp != mdpBD { //verif si mdp de P et meme que BD
+		db.Close()
 		return 0
 	}
 
@@ -116,37 +123,34 @@ func SetInscription(w http.ResponseWriter, r *http.Request) {
 	mdp := r.FormValue("password")
 
 	id := InsertValue(username, email, mdp)
+
 	cookie := &http.Cookie{
 		Name:  "user",
 		Value: strconv.Itoa(id),
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
+	http.Redirect(w, r, "/dashboard", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
 }
 
-type Card struct {
+type Card struct { //ps oublier appeler pr handler pack
 	Nom   string
 	Type  string
 	Image string
 }
 
 func Dashboard(w http.ResponseWriter, r *http.Request) { //btn marche pas car pas encore de connexion
-	cookie, err := r.Cookie("user")       //tester quand inscription et connexion amrche pr voir si gestion err fonctionne
-	if err != nil || cookie.Value == "" { //enlevé le 2eme if et mis avec le ou logique revu du cours immersions + rapide
+	cookie, err := r.Cookie("user")
+	if err != nil {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	userId, err := strconv.Atoi(cookie.Value) //bloc fait IA car besoin de id + tard pr connaitre nbr de carte, collection etc par user
-	if err != nil || userId <= 0 {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+	userID, _ := strconv.Atoi(cookie.Value)
 
-	total := CartePossede(userId) //car pr chaque user grace a ID donc met var (userId) recup nbr carte vu que c compter pas oublier count ds requete
+	total := CartePossede(userID) //car pr chaque user grace a ID donc met var (userId) recup nbr carte vu que c compter pas oublier count ds requete
 
-	collection := CollectionPerso(userId) //recup collection
+	collection := CollectionPerso(userID) //recup collection
 
 	Data := struct { //autre maniere de faire struct revoir tp soutien 1
 		Total      int
@@ -200,10 +204,17 @@ func CollectionPerso(userId int) []Card {
 		rows.Scan(&c.Nom, &c.Type, &c.Image) // IA pointeur
 		cards = append(cards, c)
 	}
-	db.Close()
 	return cards
 }
 
-func Pack(w http.ResponseWriter, r *http.Request) {
+func Deconnexion(w http.ResponseWriter, r *http.Request) { //coller de ancien tp revoir au cas ou
+	cookie := &http.Cookie{
+		Name:   "user",
+		Value:  "",
+		MaxAge: -1,
+	}
+	http.SetCookie(w, cookie)
+
+	http.Redirect(w, r, "/", http.StatusFound)
 
 }

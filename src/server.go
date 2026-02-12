@@ -19,7 +19,7 @@ func Server() {
 	http.HandleFunc("/setinfo", SetInscription)
 	http.HandleFunc("/player", PlayerHandler)
 	http.HandleFunc("/dashboard", Dashboard)
-	http.HandleFunc("/pack", Pack)
+	http.HandleFunc("/deconnex", Deconnexion)
 
 	fmt.Println("Serveur lancé sur localhost 8080")
 	http.ListenAndServe(":8080", nil)
