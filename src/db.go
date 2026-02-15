@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
@@ -18,13 +19,13 @@ func InitDB() {
 
 }
 
-func CreateDB() {
+func CreateDB() { // gérer l'erreur quand le nom ou l'email figurent déjà dans la base de donnée
 	InitDB()
 	createTableusers := `
 	CREATE TABLE IF NOT EXISTS Users(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	username TEXT NOT NULL,
-	email  TEXT NOT NULL,
+	username TEXT NOT NULL UNIQUE,
+	email  TEXT NOT NULL UNIQUE, 
 	mdp TEXT NOT NULL
 	);
 	`
@@ -66,12 +67,20 @@ func CreateDB() {
 
 	defer db.Close()
 }
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
 
 func InsertValue(nom, email, mdp string) int {
 	InitDB()
+	hashedPassword, err := HashPassword(mdp)
+	if err != nil {
+		panic(err)
+	}
 
 	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?,?)`
-	res, err := db.Exec(insertQuery, nom, email, mdp)
+	res, err := db.Exec(insertQuery, nom, email, hashedPassword)
 
 	if err != nil {
 		panic(err)

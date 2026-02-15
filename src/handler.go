@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func LoadGames() ([]Game, error) {
@@ -28,7 +30,7 @@ func PlayerHandler(w http.ResponseWriter, r *http.Request) {
 
 	games, err := LoadGames() //charm de api changer pr mettre dashboard
 	if err != nil {
-		http.Error(w, "errreur api", http.StatusInternalServerError) //diff erreur pr savoir d'ou vient
+		http.Error(w, "erreur api", http.StatusInternalServerError) //diff erreur pr savoir d'ou vient
 		return
 	}
 
@@ -96,20 +98,21 @@ func SetConnexion(w http.ResponseWriter, r *http.Request) {
 
 var id int //en glob car besoin ds pack remettre ds verifconnect si prblm
 
-func Verifconnect(username, mdp string) int { //int car return id pas string att
+func Verifconnect(username, pwd string) int { //int car return id pas string att
 	InitDB()
 
 	row := db.QueryRow("SELECT id , mdp FROM Users WHERE username = ?", username) //requete pr chercher user a username et mpd
-
-	var mdpBD string
-	err := row.Scan(&id, &mdpBD) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
-	if err != nil {
+	var id int
+	var hashedFromDB string
+	er := row.Scan(&id, &hashedFromDB) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
+	if er != nil {
 		db.Close()
 		return 0
 	}
-	if mdp != mdpBD { //verif si mdp de P et meme que BD
+
+	if bcrypt.CompareHashAndPassword([]byte(hashedFromDB), []byte(pwd)) != nil {
 		db.Close()
-		return 0
+		return 0 // mauvais mot de passe
 	}
 
 	db.Close()
@@ -130,7 +133,7 @@ func SetInscription(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/dashboard", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
+	http.Redirect(w, r, "/", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
 }
 
 type Card struct { //ps oublier appeler pr handler pack
@@ -215,6 +218,6 @@ func Deconnexion(w http.ResponseWriter, r *http.Request) { //coller de ancien tp
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/login", http.StatusFound)
 
 }
