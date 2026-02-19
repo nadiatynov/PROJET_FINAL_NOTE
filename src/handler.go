@@ -12,7 +12,7 @@ import (
 )
 
 func LoadGames() ([]Game, error) {
-	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon/{id_du_pokemon}")
+	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon/{id_du_pokemon}") // l'api ne renvoie pas un simple tableau
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -104,8 +104,8 @@ func Verifconnect(username, pwd string) int { //int car return id pas string att
 	row := db.QueryRow("SELECT id , mdp FROM Users WHERE username = ?", username) //requete pr chercher user a username et mpd
 	var id int
 	var hashedFromDB string
-	er := row.Scan(&id, &hashedFromDB) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
-	if er != nil {
+	err := row.Scan(&id, &hashedFromDB) //on recup id avec * car garder en memoire (revoir note soutien pointeur)
+	if err != nil {
 		db.Close()
 		return 0
 	}
@@ -133,7 +133,7 @@ func SetInscription(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/", http.StatusFound) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
+	http.Redirect(w, r, "/?msg=signup_ok", http.StatusSeeOther) //!!!!!!!!!!!!!! a changer quand inscription marche pr redirect vers /dashboard
 }
 
 type Card struct { //ps oublier appeler pr handler pack
