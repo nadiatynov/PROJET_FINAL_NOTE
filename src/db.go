@@ -72,12 +72,34 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
+func UserExist(nom, email string) {
+
+	var id int
+
+	err := db.QueryRow(
+		"SELECT id FROM Users WHERE username = ? OR email = ?",
+		nom, email,
+	).Scan(&id)
+
+	if err == sql.ErrNoRows {
+		return // OK → pas de doublon
+	}
+
+	if err == nil {
+		panic("username ou email déjà utilisé")
+	}
+
+	panic(err)
+}
+
 func InsertValue(nom, email, mdp string) int {
 	InitDB()
 	hashedPassword, err := HashPassword(mdp)
 	if err != nil {
 		panic(err)
 	}
+
+	UserExist(nom, email)
 
 	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?,?)`
 	res, err := db.Exec(insertQuery, nom, email, hashedPassword)
