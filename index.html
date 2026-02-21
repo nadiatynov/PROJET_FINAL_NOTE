@@ -13,8 +13,8 @@
     <script>
     window.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
-        if (params.get("msg") === "signup_ok") {
-            alert("Inscription réussie ! Connectez vous à tout moment pour poursuivre votre aventure 😊");
+        if  (window.location.search.includes("msg=signup_ok")) {
+            alert("Inscription réussie ! Connectez-vous à présent pour poursuivre votre aventure 😊");
         }
     });
 </script>
