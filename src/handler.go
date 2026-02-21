@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
 
@@ -165,7 +166,7 @@ func Dashboard(w http.ResponseWriter, r *http.Request) { //btn marche pas car pa
 
 	tmpl, err := template.ParseFiles("pages/dashboard.html")
 	if err != nil {
-		http.Error(w, "erreru template dashboard", http.StatusInternalServerError)
+		http.Error(w, "erreur template dashboard", http.StatusInternalServerError)
 		return
 	}
 
@@ -218,6 +219,85 @@ func Deconnexion(w http.ResponseWriter, r *http.Request) { //coller de ancien tp
 	}
 	http.SetCookie(w, cookie)
 
-	http.Redirect(w, r, "/login", http.StatusFound)
+	http.Redirect(w, r, "/", http.StatusFound)
 
+}
+
+func Pack(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("user")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	userID, _ := strconv.Atoi(cookie.Value)
+
+	var cards []Card
+
+	for i := 1; i <= 50; i++ {
+		url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", i) //%d IA voir rdme
+
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Println("erreur api", err)
+			continue // on continue qd meme pr pas tt stopper
+		}
+		defer resp.Body.Close()
+
+		var apidata struct { //champs pris ds json et structure comprise par AI
+			Name    string `json:"name"`
+			Sprites struct {
+				Front string `json:"front_default"`
+			} `json:"sprites"`
+			Types []struct {
+				Type struct {
+					Name string `json:"name"`
+				} `json:"type"`
+			} `json:"types"`
+		}
+		if err := json.NewDecoder(resp.Body).Decode(&apidata); err != nil { //reapprendre ligne decode json slide 36 soutien 2
+			fmt.Println("erreur json", err)
+			continue
+		}
+
+		card := Card{
+			Nom:   apidata.Name,
+			Type:  apidata.Types[0].Type.Name, //car api renvoi liste de type pas par 1 suel (internet learn tutorials tableau multidimensionnelle revoir)
+			Image: apidata.Sprites.Front,
+		}
+
+		cards = append(cards, card)
+	}
+
+	var pack []Card
+
+	for i := 0; i < 3; i++ { //genre de 0 a 3 pr 3 carte
+		r := rand.Intn(len(cards)) //revoir sire stackoverflow ex pr generer ici carte
+		carte := cards[r]          //tire r aleatoire de cards reovir c1 immersion
+		pack = append(pack, carte) //pack reslt final ps refaire err de psa mettre
+
+		res, err := db.Exec(`
+			INSERT INTO Cartes (name, type, image)
+    		VALUES (?, ?, ?)
+			`, carte.Nom, carte.Type, carte.Image) //pr enregistrer C ds bd
+
+		if err != nil {
+			fmt.Println("erreur insertion carte", err)
+		}
+
+		carteID, _ := res.LastInsertId()
+
+		_, err = db.Exec(`
+    		INSERT INTO UserCarte (user_id, carte_id)
+    		VALUES (?, ?)
+			`, userID, carteID)
+
+		if err != nil {
+			fmt.Println("erreur insertion usercare", err)
+		}
+
+	}
+
+	tmpl, _ := template.ParseFiles("pages/pack.html", "pages/template/data.html") //ps oublier de mettre le dos de la tmpl appeler
+	tmpl.Execute(w, pack)
 }
