@@ -1,3 +1,155 @@
-img{
+/* Importation d'une police typée jeu vidéo/aventure */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&display=swap');
+
+:root {
+    --poke-red: #ff1f1f;
+    --poke-blue: #3b4cca;
+    --poke-yellow: #ffcb05;
+    --poke-dark-blue: #003a70;
+    --bg-color: #f0f0f0;
+    --card-bg: #ffffff;
+}
+
+/* Fond d'écran avec un léger dégradé radial rappelant une arène */
+body {
+    font-family: 'Exo 2', sans-serif;
+    background: radial-gradient(circle, #ffffff 0%, #dcdcdc 100%);
+    background-attachment: fixed;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Titres stylisés */
+h1, h2, h3 {
+    color: var(--poke-dark-blue);
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px var(--poke-yellow);
+    letter-spacing: 2px;
     text-align: center;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 20px; }
+
+/* Conteneur de formulaire et sections */
+form, body > div, .container {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 0px rgba(0,0,0,0.1), 0 15px 25px rgba(0,0,0,0.1);
+    border: 4px solid var(--poke-red);
+    max-width: 400px;
+    width: 90%;
+    margin: 10px;
+}
+
+/* Champs de saisie (Inputs) */
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: var(--poke-blue);
+    outline: none;
+    box-shadow: 0 0 8px rgba(59, 76, 202, 0.3);
+}
+
+label {
+    font-weight: bold;
+    color: var(--poke-red);
+}
+
+/* BOUTONS STYLE POKÉBALL */
+button {
+    background-color: var(--poke-red);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 5px solid #b30000;
+    margin: 10px 5px;
+    display: inline-block;
+}
+
+button:hover {
+    background-color: var(--poke-blue);
+    border-bottom: 5px solid #2a378a;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(2px);
+    border-bottom: 0;
+}
+
+/* LA COLLECTION (DASHBOARD) */
+/* On transforme la liste en grille de cartes */
+body:has(h2) {
+    display: block;
+    padding: 40px;
+}
+
+/* Style spécifique pour chaque carte Pokémon dans le dashboard */
+div:has(img) {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border: 8px solid var(--poke-yellow);
+    border-radius: 15px;
+    display: inline-block;
+    width: 180px;
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    vertical-align: top;
+}
+
+div:has(img):hover {
+    transform: scale(1.05) rotate(2deg);
+    z-index: 10;
+}
+
+div img {
+    border-radius: 10px;
+    background: white;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+div p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Effet spécial pour le texte "Nombre total de cartes" */
+p:has(+ h2) {
+    background: var(--poke-dark-blue);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    div:has(img) {
+        width: 140px;
+    }
 }

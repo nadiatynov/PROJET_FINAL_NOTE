@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+
 </head>
 <body>
-    <h1>dashboard en cours</h1>
-    <p>nbr total de cartes : {{ .Total }}</p>
+    <h1>Voici ton espace Dashboard</h1>
+    <p>Ton nombre total de cartes : {{ .Total }}</p>
 
     <h2>Ta collection :</h2>
 
@@ -19,8 +21,8 @@
     </div>
 {{ end }}
 
-    <button onclick="window.location.href='/pack'">Ouvrir un pack</button>
-    <button onclick="window.location.href='/deconnex'">Déconnexion</button>
+    <br><button onclick="window.location.href='/pack'">Ouvrir un pack</button>
+    <br><button onclick="window.location.href='/deconnex'">Déconnexion</button>
 
 </body>
 </html>
