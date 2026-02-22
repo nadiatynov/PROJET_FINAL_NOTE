@@ -1,155 +1,148 @@
-/* Importation d'une police typée jeu vidéo/aventure */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&display=swap');
+/* Importation d'une police futuriste */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
 
 :root {
-    --poke-red: #ff1f1f;
-    --poke-blue: #3b4cca;
-    --poke-yellow: #ffcb05;
-    --poke-dark-blue: #003a70;
-    --bg-color: #f0f0f0;
-    --card-bg: #ffffff;
+    --bg-dark: #0a0b10;
+    --neon-blue: #00f2ff;
+    --neon-purple: #bc13fe;
+    --neon-pink: #ff00de;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --border-glow: rgba(0, 242, 255, 0.3);
 }
 
-/* Fond d'écran avec un léger dégradé radial rappelant une arène */
 body {
-    font-family: 'Exo 2', sans-serif;
-    background: radial-gradient(circle, #ffffff 0%, #dcdcdc 100%);
-    background-attachment: fixed;
+    background-color: var(--bg-dark);
+    /* Motif de grille futuriste en arrière-plan */
+    background-image: 
+        linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Rajdhani', sans-serif;
+    color: #fff;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    color: #333;
+    padding: 20px;
 }
 
-/* Titres stylisés */
+/* Titres Néon */
 h1, h2, h3 {
-    color: var(--poke-dark-blue);
+    font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
-    text-shadow: 2px 2px 0px var(--poke-yellow);
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+    margin-bottom: 30px;
     text-align: center;
 }
 
-h1 { font-size: 2.5rem; margin-bottom: 20px; }
-
-/* Conteneur de formulaire et sections */
-form, body > div, .container {
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 0px rgba(0,0,0,0.1), 0 15px 25px rgba(0,0,0,0.1);
-    border: 4px solid var(--poke-red);
-    max-width: 400px;
-    width: 90%;
-    margin: 10px;
+/* Conteneur effet "Verre" (Forms & Dashboard) */
+form, div:has(img), body > div {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-glow);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 242, 255, 0.1);
 }
 
-/* Champs de saisie (Inputs) */
-input[type="text"], input[type="password"], input[type="email"] {
-    width: 100%;
+/* Champs de saisie Stylisés */
+input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-purple);
+    border-radius: 5px;
     padding: 12px;
+    color: #fff;
+    width: 100%;
     margin: 10px 0 20px 0;
-    border: 2px solid #ccc;
-    border-radius: 10px;
     box-sizing: border-box;
-    font-family: inherit;
-    transition: border 0.3s;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
 }
 
 input:focus {
-    border-color: var(--poke-blue);
     outline: none;
-    box-shadow: 0 0 8px rgba(59, 76, 202, 0.3);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue);
 }
 
-label {
-    font-weight: bold;
-    color: var(--poke-red);
-}
-
-/* BOUTONS STYLE POKÉBALL */
+/* BOUTONS GAMER NÉON */
 button {
-    background-color: var(--poke-red);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-weight: 900;
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    padding: 10px 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border-bottom: 5px solid #b30000;
-    margin: 10px 5px;
-    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
 }
 
 button:hover {
-    background-color: var(--poke-blue);
-    border-bottom: 5px solid #2a378a;
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 30px var(--neon-blue);
     transform: translateY(-2px);
 }
 
-button:active {
-    transform: translateY(2px);
-    border-bottom: 0;
-}
-
-/* LA COLLECTION (DASHBOARD) */
-/* On transforme la liste en grille de cartes */
+/* DASHBOARD - GRILLE DE CARTES */
+/* Pour transformer ton dashboard en grille propre */
 body:has(h2) {
-    display: block;
-    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-/* Style spécifique pour chaque carte Pokémon dans le dashboard */
+h1, h2, p:has(+ h2) { width: 100%; text-align: center; }
+
+/* Les cartes Pokémon individuelles */
 div:has(img) {
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 8px solid var(--poke-yellow);
-    border-radius: 15px;
-    display: inline-block;
-    width: 180px;
+    width: 200px;
     margin: 15px;
-    padding: 10px;
     text-align: center;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-    vertical-align: top;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--neon-purple);
 }
 
 div:has(img):hover {
-    transform: scale(1.05) rotate(2deg);
-    z-index: 10;
+    transform: scale(1.1);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 25px var(--neon-pink);
 }
 
 div img {
-    border-radius: 10px;
-    background: white;
-    padding: 5px;
-    border: 1px solid #ddd;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
     margin-bottom: 10px;
+    max-width: 100%;
 }
 
 div p {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
     margin: 5px 0;
-    font-size: 0.9rem;
-    font-weight: bold;
 }
 
-/* Effet spécial pour le texte "Nombre total de cartes" */
-p:has(+ h2) {
-    background: var(--poke-dark-blue);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    display: inline-block;
+/* Animation de scan sur les images */
+div img:hover {
+    animation: scan 1.5s infinite linear;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    div:has(img) {
-        width: 140px;
-    }
+@keyframes scan {
+    0% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-blue)); }
+    50% { filter: brightness(1.5) drop-shadow(0 0 20px var(--neon-blue)); }
+    100% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-blue)); }
+}
+
+/* Spécifique pour le message d'accueil */
+h3 {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
 }
