@@ -1,0 +1,116 @@
+package soutien
+
+import (
+	"database/sql"
+	"fmt"
+
+	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
+)
+
+var db *sql.DB
+
+func InitDB() {
+	var err error
+	db, err = sql.Open("sqlite3", "MyAppList.db")
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+func CreateDB() { // gérer l'erreur quand le nom ou l'email figurent déjà dans la base de donnée
+	InitDB()
+	createTableusers := `
+	CREATE TABLE IF NOT EXISTS Users(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username TEXT NOT NULL UNIQUE,
+	email  TEXT NOT NULL UNIQUE, 
+	mdp TEXT NOT NULL
+	);
+	`
+	_, err := db.Exec(createTableusers)
+
+	if err != nil {
+		panic(err)
+	}
+
+	createTablecartes := `
+	CREATE TABLE IF NOT EXISTS Cartes(
+	carte_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	type TEXT NOT NULL,
+	image TEXT 
+	);
+     ` //ajout de image par marjane
+	_, err = db.Exec(createTablecartes)
+
+	if err != nil {
+		panic(err)
+	}
+
+	createTableUserCarte := `
+	CREATE TABLE IF NOT EXISTS UserCarte(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER,
+	carte_id INTEGER,
+	FOREIGN KEY (user_id) REFERENCES Users(id),
+	FOREIGN KEY (carte_id) REFERENCES Cartes(carte_id)
+	);
+	` //ajout de la table par marjane
+
+	_, err = db.Exec(createTableUserCarte)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer db.Close()
+}
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+func UserExist(nom, email string) {
+
+	var id int
+
+	err := db.QueryRow(
+		"SELECT id FROM Users WHERE username = ? OR email = ?",
+		nom, email,
+	).Scan(&id)
+
+	if err == sql.ErrNoRows {
+		return // OK → pas de doublon
+	}
+
+	if err == nil {
+		panic("username ou email déjà utilisé")
+	}
+
+	panic(err)
+}
+
+func InsertValue(nom, email, mdp string) int {
+	InitDB()
+	hashedPassword, err := HashPassword(mdp)
+	if err != nil {
+		panic(err)
+	}
+
+	UserExist(nom, email)
+
+	insertQuery := `INSERT INTO Users(username, email, mdp) VALUES(?,?,?)`
+	res, err := db.Exec(insertQuery, nom, email, hashedPassword)
+
+	if err != nil {
+		panic(err)
+	}
+	id, _ := res.LastInsertId()
+	fmt.Println(id)
+
+	defer db.Close()
+	return int(id)
+
+}

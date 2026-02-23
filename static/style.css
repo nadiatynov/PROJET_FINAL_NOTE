@@ -1,0 +1,148 @@
+/* Importation d'une police futuriste */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+    --bg-dark: #0a0b10;
+    --neon-blue: #00f2ff;
+    --neon-purple: #bc13fe;
+    --neon-pink: #ff00de;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --border-glow: rgba(0, 242, 255, 0.3);
+}
+
+body {
+    background-color: var(--bg-dark);
+    /* Motif de grille futuriste en arrière-plan */
+    background-image: 
+        linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Rajdhani', sans-serif;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Titres Néon */
+h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Conteneur effet "Verre" (Forms & Dashboard) */
+form, div:has(img), body > div {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-glow);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 242, 255, 0.1);
+}
+
+/* Champs de saisie Stylisés */
+input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-purple);
+    border-radius: 5px;
+    padding: 12px;
+    color: #fff;
+    width: 100%;
+    margin: 10px 0 20px 0;
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+/* BOUTONS GAMER NÉON */
+button {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    padding: 10px 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+button:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 30px var(--neon-blue);
+    transform: translateY(-2px);
+}
+
+/* DASHBOARD - GRILLE DE CARTES */
+/* Pour transformer ton dashboard en grille propre */
+body:has(h2) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+h1, h2, p:has(+ h2) { width: 100%; text-align: center; }
+
+/* Les cartes Pokémon individuelles */
+div:has(img) {
+    width: 200px;
+    margin: 15px;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--neon-purple);
+}
+
+div:has(img):hover {
+    transform: scale(1.1);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 25px var(--neon-pink);
+}
+
+div img {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+
+div p {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    margin: 5px 0;
+}
+
+/* Animation de scan sur les images */
+div img:hover {
+    animation: scan 1.5s infinite linear;
+}
+
+@keyframes scan {
+    0% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-blue)); }
+    50% { filter: brightness(1.5) drop-shadow(0 0 20px var(--neon-blue)); }
+    100% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-blue)); }
+}
+
+/* Spécifique pour le message d'accueil */
+h3 {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
+}
