@@ -51,6 +51,18 @@ la variable « c » reçoit les valeurs nom type et image.
   
 Le Verifconnect cependant a été coder à l’aide de mes connaissacne et ressources internet. Par ailleurs grâce à un rappel de l’ia sur les pointeurs, j’ai compris automatiquement que dans la fonction Verifconnect l’id devait être en pointeur car on utilise  un Scan et que celui-ci devait lire la valeur venant de la base de donnée et l’écrire dans le handler.go (en gros il devait l’avoir en mémoire).
 
+# UTILISATION DE L'IA PAR Nadiath : 
+
+- La fonction pour hasher le mot de passe avec bcrypt et son usage au niveau de la fonction VerifConnect pour comparer le mdp qui a été inséré dans la BDD  et celui que l'utilisateur rentre au moment de la connexion .
+
+- La fonction UserExist dans le fichier db.go pour pouvoir appliquer l'unicité des utilisateurs même si côté navigateur j'ai pas finalisé
+ça pour soit disant que ce nom d'utilisateur ou l'email ont été déjà pris . 
+
+- Le script en JavaScript pour faire la pop up ( ça je savais pas du tout comment faire donc ça m'a permis d'apprendre ) . 
+
+Donc j'ai appris le hashage de mot de passe , à plus ou moins gérer l'authentification unique des utilisateurs sur le site et faire une pop up basique en JavaScript. 
+
+
 - Le CSS a été fait avec l’ai 
 
 
