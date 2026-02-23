@@ -56,12 +56,13 @@ Le Verifconnect cependant a été coder à l’aide de mes connaissacne et resso
 - La fonction pour hasher le mot de passe avec bcrypt et son usage au niveau de la fonction VerifConnect pour comparer le mdp qui a été inséré dans la BDD  et celui que l'utilisateur rentre au moment de la connexion .
 
 - La fonction UserExist dans le fichier db.go pour pouvoir appliquer l'unicité des utilisateurs même si côté navigateur j'ai pas finalisé
-ça pour soit disant que ce nom d'utilisateur ou l'email ont été déjà pris . 
+ça pour soit disant dire que ce nom d'utilisateur ou l'email ont été déjà pris . 
 
 - Le script en JavaScript pour faire la pop up ( ça je savais pas du tout comment faire donc ça m'a permis d'apprendre ) . 
 
 Donc j'ai appris le hashage de mot de passe , à plus ou moins gérer l'authentification unique des utilisateurs sur le site et faire une pop up basique en JavaScript. 
 
+# REALISATION DU CSS 
 
 - Le CSS a été fait avec l’ai 
 
