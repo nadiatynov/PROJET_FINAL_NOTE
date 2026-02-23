@@ -28,7 +28,7 @@ Pour tester ce projet, suivez les étapes suivantes :
 # GUIDE DE L’APPLICATION: 
 L’utilisation du site commence par une étape d’authentification. L’utilisateur peut soit s’inscrire en créant un compte avec un nom d’utilisateur, une adresse mail et un mot de passe, soit simplement se connecter s’il possède déjà un compte. Cette étape permet d’associer chaque joueur à un ID unique et de garantir une meilleure gestion de l’attribution des collections de cartes par joueur par exemple. 
 
-Après cette étape, si l’inscription a abouti l’utilisateur est redirigé automatiquement vers la page connexion et seulement a l'issue de celle ci, si elle réussie, que nous somme dirigé automatiquement vers le Dashboard où il pourra observer le nombres total de carte qu’il possède, sa collection de carte et le bouton « ouvrir un pack » qui lui permettra  d’ouvrir un pack de 3 cartes pokémon qui seront automatiquement ajouter à sa collection personnelles de cartes.
+Après cette étape, si l’inscription a abouti l’utilisateur est redirigé automatiquement vers la page connexion et seulement a l'issue de celle ci, l'utilisateur est dirigé automatiquement vers le Dashboard où il pourra observer le nombres total de carte qu’il possède, sa collection de carte et le bouton « ouvrir un pack » qui lui permettra  d’ouvrir un pack de 3 cartes pokémon qui seront automatiquement ajouter à sa collection personnelles de cartes.
 
 
 # UTILISATION D’IA RESPCTUEUSE CONCERNANT Marjane : 
