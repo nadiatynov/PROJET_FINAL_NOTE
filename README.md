@@ -65,7 +65,7 @@ Le Verifconnect cependant a été coder à l’aide de mes connaissacne et resso
 
 Donc j'ai appris le hashage de mot de passe , à plus ou moins gérer l'authentification unique des utilisateurs sur le site et faire une pop up basique en JavaScript. 
 
-# REALISATION DU CSS 
+- REALISATION DU CSS 
 
 
 
