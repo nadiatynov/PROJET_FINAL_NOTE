@@ -51,6 +51,9 @@ la variable « c » reçoit les valeurs nom type et image.
   
 Le Verifconnect cependant a été coder à l’aide de mes connaissacne et ressources internet. Par ailleurs grâce à un rappel de l’ia sur les pointeurs, j’ai compris automatiquement que dans la fonction Verifconnect l’id devait être en pointeur car on utilise  un Scan et que celui-ci devait lire la valeur venant de la base de donnée et l’écrire dans le handler.go (en gros il devait l’avoir en mémoire).
 
+- Le CSS a été fait avec l’ai 
+
+
 # UTILISATION DE L'IA PAR Nadiath : 
 
 - La fonction pour hasher le mot de passe avec bcrypt et son usage au niveau de la fonction VerifConnect pour comparer le mdp qui a été inséré dans la BDD  et celui que l'utilisateur rentre au moment de la connexion .
@@ -64,7 +67,6 @@ Donc j'ai appris le hashage de mot de passe , à plus ou moins gérer l'authenti
 
 # REALISATION DU CSS 
 
-- Le CSS a été fait avec l’ai 
 
 
 
